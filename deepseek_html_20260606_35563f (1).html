@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>J. Austin Antiques | Arts & Crafts Mission Style</title>
+  <!-- Tabler Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Color palette: deep greens, browns, cream – only gold and light accents remain */
+    :root {
+      --g0: #0a120c;
+      --g1: #1e2a23;
+      --g2: #2c3b31;
+      --g3: #3f4f42;
+      --g4: #5c6e5b;
+      --g5: #7e8d74;
+      --g6: #a2b094;
+      --g7: #c6cfbc;
+      --g8: #e0e5d8;
+      --g9: #f2f4ec;
+      --brown-dark: #3e2a1f;
+      --brown-mid: #6b4c3a;
+      --brown-light: #9c7a5e;
+      --gold-accent: #c4a27a;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* Slower fade-in for About & Contact pages */
+    .about-body .fade-up,
+    .contact-wrap .fade-up,
+    .page-about .fade-up,
+    .page-contact .fade-up {
+      transition-duration: 0.9s;
+    }
+
+    .fade-stagger > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .fade-stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay:0.00s; }
+    .fade-stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.07s; }
+    .fade-stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.14s; }
+    .fade-stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.21s; }
+    .fade-stagger.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay:0.28s; }
+    .fade-stagger.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay:0.35s; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--g9);
+      color: var(--g1);
+      min-height: 100vh;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* NAV - no dark brown border */
+    .topbar {
+      background: var(--g0);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold-accent);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links { display: flex; height: 100%; gap: 0.5rem; align-items: center; }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--g7);
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0 16px;
+      height: 52px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-btn:hover { background: var(--brown-dark); color: var(--gold-accent); }
+    .nav-btn.active { background: var(--brown-dark); color: var(--gold-accent); }
+
+    /* Cart badge */
+    .cart-badge {
+      background: var(--gold-accent);
+      color: var(--g0);
+      border-radius: 30px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-left: 6px;
+      display: inline-block;
+    }
+
+    /* SUBNAV - no dark brown border */
+    .subnav {
+      background: var(--g1);
+      display: flex;
+      justify-content: center;
+    }
+
+    .subnav-btn {
+      background: none;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--g6);
+      padding: 11px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .subnav-btn:hover { color: var(--gold-accent); border-bottom-color: var(--gold-accent); }
+    .subnav-btn.active { color: var(--gold-accent); border-bottom-color: var(--gold-accent); }
+
+    /* HERO with store background image */
+    .hero {
+      background: linear-gradient(rgba(10, 18, 12, 0.85), rgba(30, 42, 35, 0.85)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&auto=format');
+      background-size: cover;
+      background-position: center 40%;
+      padding: 100px 2rem 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 620px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+      border: 1px solid var(--brown-light);
+      border-radius: 20px;
+      padding: 5px 16px;
+      margin-bottom: 22px;
+      background: rgba(0,0,0,0.3);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--g9);
+      line-height: 1.08;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero-subtitle {
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--g6);
+      margin-bottom: 22px;
+    }
+
+    .hero-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 0 auto 24px;
+    }
+
+    .hero-rule-line { width: 56px; height: 1px; background: var(--gold-accent); opacity: 0.6; }
+    .hero-rule-dot  { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-accent); }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--g7);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      background: var(--brown-dark);
+      color: var(--g9);
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 13px 30px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      margin-bottom: 40px;
+      transition: background 0.2s;
+    }
+    .hero-cta:hover { background: var(--brown-mid); }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .rating-num { font-family: 'Playfair Display', serif; font-size: 46px; color: var(--gold-accent); line-height: 1; }
+    .rating-stars { color: var(--gold-accent); font-size: 18px; display: block; margin-bottom: 3px; }
+    .rating-label { font-size: 11px; color: var(--g6); letter-spacing: 0.08em; }
+
+    /* INFO STRIP - no dark borders */
+    .info-strip {
+      background: var(--g2);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .info-item {
+      text-align: center;
+      padding: 18px 36px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .info-item:last-child { border-right: none; }
+
+    .info-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--g6);
+      margin-bottom: 4px;
+    }
+
+    .info-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      color: var(--g9);
+    }
+
+    /* SECTION HEADERS */
+    .section-head {
+      text-align: center;
+      padding: 52px 2rem 10px;
+    }
+
+    .section-deco-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .section-deco-icon {
+      font-size: 22px;
+      color: var(--gold-accent);
+      opacity: 0.8;
+    }
+
+    .section-deco-line {
+      width: 40px;
+      height: 1px;
+      background: var(--brown-light);
+      opacity: 0.6;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--g1);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brown-mid);
+      margin-bottom: 36px;
+    }
+
+    /* CATEGORY GRID - wider, rectangular images */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      padding: 0 2rem 52px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cat-card {
+      background: var(--g8);
+      border: 1px solid var(--g7);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+    }
+
+    .cat-img {
+      width: 100%;
+      height: 280px;  /* taller and rectangular */
+      background: var(--g7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .cat-img i { font-size: 64px; opacity: 0.55; color: var(--brown-dark); }
+    .cat-img span { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brown-mid); font-weight: 500; }
+
+    .cat-label {
+      background: var(--g2);
+      color: var(--g9);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 12px;
+      text-align: center;
+    }
+
+    /* REVIEWS */
+    .reviews-section {
+      background: var(--g8);
+      padding: 0 2rem 52px;
+      border-top: 1px solid var(--g7);
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .review-card {
+      background: var(--g9);
+      border: 1px solid var(--g7);
+      border-radius: 12px;
+      padding: 26px;
+      position: relative;
+    }
+
+    .review-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 60px;
+      color: var(--gold-accent);
+      line-height: 1;
+      opacity: 0.4;
+    }
+
+    .stars { color: var(--gold-accent); font-size: 14px; margin-bottom: 12px; }
+    .review-text {
+      font-size: 14px;
+      line-height: 1.68;
+      color: var(--g2);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+    .reviewer-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--g1);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .reviewer-meta { font-size: 11px; color: var(--brown-mid); }
+
+    /* ABOUT page */
+    .about-hero {
+      background: linear-gradient(rgba(10, 18, 12, 0.75), rgba(30, 42, 35, 0.75)), url('https://images.unsplash.com/photo-1600565193348-f74bd4c7dc09?w=1600&auto=format');
+      background-size: cover;
+      background-position: center 30%;
+      padding: 70px 2rem 70px;
+      text-align: center;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .page-contact .about-hero {
+      background: linear-gradient(rgba(10, 18, 12, 0.8), rgba(30, 42, 35, 0.8)), url('https://images.unsplash.com/photo-1604719312566-8912e9228a0c?w=1600&auto=format');
+    }
+
+    .page-hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      color: var(--g9);
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .page-hero-sub {
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+      margin-top: 12px;
+    }
+
+    .about-body {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 2rem 60px;
+    }
+
+    .about-body h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: var(--g1);
+      margin-bottom: 8px;
+    }
+
+    .about-accent {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .about-accent-line { width: 50px; height: 2px; background: var(--gold-accent); }
+    .about-accent-icon { font-size: 18px; color: var(--gold-accent); }
+
+    .about-body p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--g2);
+      margin-bottom: 20px;
+    }
+
+    .about-quote {
+      background: var(--g8);
+      border-left: 5px solid var(--gold-accent);
+      border-radius: 0 12px 12px 0;
+      padding: 26px 30px;
+      margin: 32px 0;
+      position: relative;
+    }
+
+    .about-quote::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif;
+      font-size: 70px;
+      color: var(--gold-accent);
+      position: absolute;
+      top: 4px;
+      left: 12px;
+      line-height: 1;
+      opacity: 0.3;
+    }
+
+    .about-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--g1);
+      margin: 0;
+      padding-left: 32px;
+    }
+
+    /* CONTACT - no dark borders */
+    .contact-wrap {
+      max-width: 900px;
+      margin: 48px auto 60px;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .contact-info-card {
+      background: var(--g2);
+      border-radius: 12px;
+      padding: 36px;
+    }
+
+    .contact-info-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--gold-accent);
+      margin-bottom: 24px;
+    }
+
+    .contact-row { margin-bottom: 18px; }
+    .contact-row-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--g6); margin-bottom: 4px; }
+    .contact-row-val { font-size: 15px; color: var(--g8); line-height: 1.5; }
+
+    .contact-form-card {
+      background: var(--g8);
+      border: 1px solid var(--g7);
+      border-radius: 12px;
+      padding: 32px;
+    }
+
+    .contact-form-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--g1);
+      margin-bottom: 22px;
+    }
+
+    .form-field { margin-bottom: 16px; }
+
+    .form-field label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--brown-dark);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .form-field input,
+    .form-field textarea {
+      width: 100%;
+      border: 1px solid var(--g6);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--g1);
+      background: var(--g9);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus { border-color: var(--gold-accent); }
+    .form-field textarea { height: 100px; resize: vertical; }
+
+    .submit-btn {
+      background: var(--brown-dark);
+      color: var(--g9);
+      border: none;
+      padding: 12px 24px;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    .submit-btn:hover { background: var(--brown-mid); }
+
+    /* CATEGORY PAGE gallery - wider rectangles */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      padding: 40px 2rem 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      background: var(--g8);
+      border: 1px solid var(--g7);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 220px;
+      background: var(--g7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .gallery-img i { font-size: 52px; opacity: 0.5; color: var(--brown-dark); }
+    .gallery-img span { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brown-mid); font-weight: 500; }
+
+    .gallery-caption {
+      padding: 16px 18px;
+      font-size: 14px;
+      color: var(--g2);
+      background: var(--g9);
+      flex: 1;
+    }
+
+    .gallery-caption strong {
+      display: block;
+      font-size: 16px;
+      color: var(--g1);
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 6px;
+    }
+
+    /* ADD TO CART BUTTON (new, scoped only inside gallery) */
+    .add-to-cart-btn {
+      background: var(--brown-dark);
+      color: var(--g9);
+      border: none;
+      padding: 8px 12px;
+      margin: 0 16px 16px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: calc(100% - 32px);
+    }
+    .add-to-cart-btn:hover {
+      background: var(--brown-mid);
+    }
+
+    /* FOOTER - no dark border */
+    .footer {
+      background: var(--g0);
+      color: var(--g5);
+      text-align: center;
+      padding: 26px 2rem;
+      font-size: 13px;
+      letter-spacing: 0.07em;
+    }
+
+    .footer strong { color: var(--gold-accent); }
+
+    /* remove old emoji decor */
+    .hero-deco, .about-hero-deco { display: none; }
+
+    /* ----- CART PAGE STYLES (added without affecting other pages) ----- */
+    .cart-page {
+      background: var(--g9);
+      min-height: 60vh;
+    }
+    .cart-header {
+      text-align: center;
+      padding: 40px 2rem 20px;
+    }
+    .cart-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      color: var(--g1);
+      margin-bottom: 8px;
+    }
+    .cart-header p {
+      color: var(--brown-mid);
+      font-size: 14px;
+      letter-spacing: 0.08em;
+    }
+    .cart-container {
+      max-width: 900px;
+      margin: 20px auto 60px;
+      padding: 0 2rem;
+    }
+    .cart-items-card {
+      background: var(--g8);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      border: 1px solid var(--g7);
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--g7);
+    }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    .cart-item-info {
+      flex: 2;
+    }
+    .cart-item-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--g1);
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 6px;
+    }
+    .cart-item-price {
+      font-size: 16px;
+      color: var(--brown-mid);
+      font-family: monospace;
+    }
+    .cart-item-remove {
+      background: none;
+      border: none;
+      color: var(--brown-mid);
+      cursor: pointer;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+      padding: 6px 12px;
+      border-radius: 30px;
+    }
+    .cart-item-remove:hover {
+      color: var(--brown-dark);
+      background: rgba(0,0,0,0.05);
+    }
+    .cart-total-section {
+      text-align: right;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 2px solid var(--gold-accent);
+    }
+    .cart-total {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--g1);
+      margin-bottom: 20px;
+    }
+    .checkout-btn {
+      background: var(--brown-dark);
+      color: var(--g9);
+      border: none;
+      padding: 12px 28px;
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: auto;
+      min-width: 200px;
+    }
+    .checkout-btn:hover {
+      background: var(--brown-mid);
+    }
+    .empty-cart {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--brown-mid);
+      font-size: 18px;
+    }
+
+    /* Mobile responsiveness (preserved) */
+    @media (max-width: 768px) {
+      .cat-grid, .reviews-grid, .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .cat-img { height: 240px; }
+      .gallery-img { height: 200px; }
+      .hero-title { font-size: 48px; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .page-hero-title { font-size: 38px; }
+      .cart-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .cart-item-remove { align-self: flex-end; }
+      .cart-total-section { text-align: center; }
+    }
+    @media (max-width: 540px) {
+      .cat-grid, .reviews-grid, .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-title { font-size: 36px; }
+      .info-strip { flex-direction: column; }
+      .info-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .info-item:last-child { border-bottom: none; }
+      .cart-header h1 { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+<div id="site">
+  <nav class="topbar">
+    <div class="logo-text">J. Austin Antiques</div>
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="showPage('home')">Home</button>
+      <button class="nav-btn" onclick="showPage('about')">About</button>
+      <button class="nav-btn" onclick="showPage('contact')">Help / Contact</button>
+      <button class="nav-btn" id="cartNavBtn" onclick="showPage('cart')">
+        Cart <span id="cartCountBadge" class="cart-badge" style="display: none;">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <button class="subnav-btn" onclick="showCat('furniture')">Furniture</button>
+    <button class="subnav-btn" onclick="showCat('metalwork')">Metal Work</button>
+    <button class="subnav-btn" onclick="showCat('artwork')">Art Work</button>
+    <button class="subnav-btn" onclick="showCat('pottery')">Pottery</button>
+    <button class="subnav-btn" onclick="showCat('lighting')">Lighting</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-tag fade-up">Amherst, Massachusetts · Family Owned & Operated</div>
+      <div class="hero-title fade-up">J. Austin Antiques</div>
+      <div class="hero-subtitle fade-up">American Arts & Crafts · Mission Style</div>
+      <div class="hero-rule fade-up"><div class="hero-rule-line"></div><div class="hero-rule-dot"></div><div class="hero-rule-line"></div></div>
+      <div class="hero-desc fade-up">Family-owned shop in Amherst, MA. We carry Mission furniture, pottery, lighting, metalwork, and original art. Stop by and see what's new.</div>
+      <button class="hero-cta fade-up" onclick="document.querySelector('.cat-grid').scrollIntoView({behavior:'smooth'})">Browse the Collection</button>
+      <div class="rating-row fade-up">
+        <div class="rating-num">4.6</div>
+        <div><span class="rating-stars">★★★★★</span><span class="rating-label">9 Google Reviews</span></div>
+      </div>
+    </div>
+
+    <div class="info-strip fade-up">
+      <div class="info-item"><div class="info-label">Address</div><div class="info-val">31 South Pleasant St, Amherst MA</div></div>
+      <div class="info-item"><div class="info-label">Phone</div><div class="info-val">413.253.3986</div></div>
+      <div class="info-item"><div class="info-label">Specialty</div><div class="info-val">Arts & Crafts · Mission Style</div></div>
+    </div>
+
+    <div class="section-head fade-up">
+      <div class="section-deco-row">
+        <i class="ti ti-bowl section-deco-icon"></i><div class="section-deco-line"></div>
+        <i class="ti ti-lamp section-deco-icon"></i><div class="section-deco-line"></div>
+        <i class="ti ti-armchair section-deco-icon"></i><div class="section-deco-line"></div>
+        <i class="ti ti-palette section-deco-icon"></i><div class="section-deco-line"></div>
+        <i class="ti ti-circles-relation section-deco-icon"></i>
+      </div>
+      <div class="section-title">Browse Our Collection</div>
+      <div class="section-sub">Click any category to explore</div>
+    </div>
+
+    <div class="cat-grid fade-stagger">
+      <div class="cat-card" onclick="showCat('furniture')"><div class="cat-img"><i class="ti ti-armchair"></i><span>Furniture</span></div><div class="cat-label">Furniture</div></div>
+      <div class="cat-card" onclick="showCat('metalwork')"><div class="cat-img"><i class="ti ti-circles-relation"></i><span>Metal Work</span></div><div class="cat-label">Metal Work</div></div>
+      <div class="cat-card" onclick="showCat('artwork')"><div class="cat-img"><i class="ti ti-palette"></i><span>Art Work</span></div><div class="cat-label">Art Work</div></div>
+      <div class="cat-card" onclick="showCat('pottery')"><div class="cat-img"><i class="ti ti-bowl"></i><span>Pottery</span></div><div class="cat-label">Pottery</div></div>
+      <div class="cat-card" onclick="showCat('lighting')"><div class="cat-img"><i class="ti ti-lamp"></i><span>Lighting</span></div><div class="cat-label">Lighting</div></div>
+      <div class="cat-card" onclick="showPage('contact')"><div class="cat-img"><i class="ti ti-map-pin"></i><span>Visit Us</span></div><div class="cat-label">Visit Us</div></div>
+    </div>
+
+    <div class="address-map-section fade-up">
+      <div class="section-head" style="padding-top:44px">
+        <div class="section-deco-row"><i class="ti ti-map-pin section-deco-icon"></i><div class="section-deco-line"></div><i class="ti ti-bowl section-deco-icon"></i><div class="section-deco-line"></div><i class="ti ti-map-pin section-deco-icon"></i></div>
+        <div class="section-title">Find Us</div>
+        <div class="section-sub">31 S Pleasant St, Amherst, MA 01002</div>
+      </div>
+      <div style="max-width:960px;margin:0 auto;padding:0 2rem 48px;">
+        <iframe src="https://maps.google.com/maps?q=31+S+Pleasant+St,+Amherst,+MA+01002&output=embed" width="100%" height="350" style="border:0;border-radius:12px;display:block;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="reviews-section fade-up">
+      <div class="section-head" style="padding-top:44px">
+        <div class="section-deco-row"><i class="ti ti-bowl section-deco-icon"></i><div class="section-deco-line"></div><i class="ti ti-star section-deco-icon"></i><div class="section-deco-line"></div><i class="ti ti-bowl section-deco-icon"></i></div>
+        <div class="section-title">What Our Customers Say</div>
+        <div class="section-sub">Google Reviews · 4.6 Stars</div>
+      </div>
+      <div class="reviews-grid fade-stagger">
+        <div class="review-card"><div class="stars">★★★★★</div><div class="review-text">Jeremy always has an exceptional selection of quality craftsman/mission/arts & crafts furniture for reasonable prices as well as exceptional art and jewelry at every price point.</div><div class="reviewer-name">Sandor Farkas</div><div class="reviewer-meta">Local Guide · 36 reviews</div></div>
+        <div class="review-card"><div class="stars">★★★★★</div><div class="review-text">My wife and I love it. They have some of the most beautiful antique jewelry along with amazing vases and ceramics. We come to Amherst a couple times a year and always stop here.</div><div class="reviewer-name">Levi Toledo</div><div class="reviewer-meta">6 reviews · 2 photos</div></div>
+        <div class="review-card"><div class="stars">★★★★★</div><div class="review-text">Always welcoming! Everything is beautiful. The main problem is deciding what you want to purchase!</div><div class="reviewer-name">Candy Violin</div><div class="reviewer-meta">Local Guide · 57 reviews</div></div>
+      </div>
+    </div>
+    <div class="footer"><strong>J. Austin Antiques</strong> · 31 South Pleasant St, Amherst MA 01002 · 413.253.3986</div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="page" id="page-about">
+    <div class="about-hero fade-up"><div class="page-hero-title">About Us</div><div class="page-hero-sub">Our Story & Mission</div></div>
+    <div class="about-body fade-up">
+      <h2>A Family Tradition</h2>
+      <div class="about-accent"><div class="about-accent-line"></div><i class="ti ti-bowl about-accent-icon"></i><div class="about-accent-line"></div></div>
+      <p>J. Austin Antiques is a family owned store in Amherst, MA focused entirely on the American Arts and Crafts movement. We carry Mission furniture, pottery, lighting, original art, and metal work, all hand-selected.</p>
+      <div class="about-quote"><p>We have an ever-changing selection of Mission furniture, art, pottery, lighting, metal work and more.</p></div>
+      <p>The Arts and Crafts movement pushed back against mass production in the late 1800s. The work is honest: quartersawn oak, visible joinery, hand-thrown clay, hammered metal. Nothing hidden, nothing fake.</p>
+      <div style="width:100%;height:280px;background:var(--g7);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;margin:28px 0;"><i class="ti ti-photo" style="font-size:48px;color:var(--brown-dark);opacity:0.6;"></i><span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--brown-mid);">Placeholder Image</span></div>
+      <p>We pick every piece ourselves. Whether you have been collecting for years or just found the style, you are welcome to come look around.</p>
+      <p>We are at 31 South Pleasant Street in Amherst and at the Green Market on Saturdays. Stop in: something new comes in all the time.</p>
+    </div>
+    <div class="footer"><strong>J. Austin Antiques</strong> · 31 South Pleasant St, Amherst MA 01002 · 413.253.3986</div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="page" id="page-contact" style="display:none;flex-direction:column;min-height:100vh;">
+    <div class="about-hero fade-up"><div class="page-hero-title">Help & Contact</div><div class="page-hero-sub">Get In Touch With Us</div></div>
+    <div style="flex:1;">
+      <div style="max-width:800px;margin:0 auto;padding:42px 2rem 28px;" class="fade-up"><p style="font-family:'Playfair Display',serif;font-size:26px;color:var(--g1);margin-bottom:12px;font-weight:600;">Come find us.</p><p style="font-size:16px;line-height:1.8;color:var(--g2);margin-bottom:16px;">The shop is usually open and Jeremy is usually in. Inventory moves fast, so if you're coming for something specific, call ahead first.</p><p style="font-size:16px;line-height:1.8;color:var(--g2);margin-bottom:32px;">For questions about a piece (price, condition, dimensions) phone is best. Or send a message below and we will get back to you.</p></div>
+      <div class="contact-wrap fade-up">
+        <div class="contact-info-card"><h3>Find Us</h3><div class="contact-row"><div class="contact-row-label">Address</div><div class="contact-row-val">31 South Pleasant St<br>Amherst, MA 01002</div></div><div class="contact-row"><div class="contact-row-label">Phone</div><div class="contact-row-val">413.253.3986</div></div><div class="contact-row"><div class="contact-row-label">Specialty</div><div class="contact-row-val">American Arts & Crafts<br>Mission Furniture & More</div></div><div class="contact-row"><div class="contact-row-label">Green Market</div><div class="contact-row-val">Saturdays in Amherst</div></div></div>
+        <div class="contact-form-card"><h3>Send a Message</h3><div class="form-field"><label>Your Name</label><input type="text" placeholder="Full name" /></div><div class="form-field"><label>Email</label><input type="email" placeholder="your@email.com" /></div><div class="form-field"><label>Message</label><textarea placeholder="Ask about a piece, check availability, or just say hello..."></textarea></div><button class="submit-btn">Send Message</button></div>
+      </div>
+      <div style="max-width:800px;margin:0 auto;padding:0 2rem 52px;"><iframe src="https://maps.google.com/maps?q=31+S+Pleasant+St,+Amherst,+MA+01002&output=embed" width="100%" height="350" style="border:0;border-radius:12px;display:block;" allowfullscreen="" loading="lazy"></iframe></div>
+    </div>
+    <div class="footer"><strong>J. Austin Antiques</strong> · 31 South Pleasant St, Amherst MA 01002 · 413.253.3986</div>
+  </div>
+
+  <!-- CART PAGE (new) -->
+  <div class="page" id="page-cart" style="display:none;">
+    <div class="cart-header">
+      <h1>Your Cart</h1>
+      <p>Review your selections</p>
+    </div>
+    <div class="cart-container" id="cartContainer">
+      <div id="cartItemsList" class="cart-items-card"></div>
+    </div>
+    <div class="footer"><strong>J. Austin Antiques</strong> · 31 South Pleasant St, Amherst MA 01002 · 413.253.3986</div>
+  </div>
+
+  <!-- CATEGORY PAGE -->
+  <div class="page" id="page-cat">
+    <div class="about-hero cat-hero-dynamic fade-up" id="cat-hero"><div class="page-hero-title" id="cat-title">Furniture</div><div class="page-hero-sub" id="cat-sub">American Arts & Crafts Collection</div></div>
+    <div class="section-head fade-up"><div class="section-deco-row" id="cat-deco-row"></div><div class="section-sub" id="cat-section-sub" style="margin-bottom:0"></div></div>
+    <div id="cat-blurb" class="fade-up" style="max-width:800px;margin:0 auto;padding:0 2rem 40px;font-size:16px;line-height:1.8;color:var(--g2);"></div>
+    <div class="gallery-grid fade-stagger" id="gallery-grid"></div>
+    <div class="footer"><strong>J. Austin Antiques</strong> · 31 South Pleasant St, Amherst MA 01002 · 413.253.3986</div>
+  </div>
+</div>
+
+<script>
+  // ---------- CART STATE ----------
+  let cart = [];  // each item: { name, price }
+
+  // Helper: update cart UI and badge
+  function updateCartUI() {
+    const container = document.getElementById('cartItemsList');
+    const badge = document.getElementById('cartCountBadge');
+    if (!container) return;
+    const count = cart.length;
+    if (badge) {
+      if (count > 0) {
+        badge.style.display = 'inline-block';
+        badge.textContent = count;
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+    if (count === 0) {
+      container.innerHTML = '<div class="empty-cart">Your cart is empty. Browse the collection to add items.</div>';
+      return;
+    }
+    let itemsHtml = '';
+    let total = 0;
+    cart.forEach((item, idx) => {
+      const priceNum = parseFloat(item.price) || 0;
+      total += priceNum;
+      itemsHtml += `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${escapeHtml(item.name)}</div>
+            <div class="cart-item-price">$${priceNum.toFixed(2)}</div>
+          </div>
+          <button class="cart-item-remove" data-index="${idx}">Remove</button>
+        </div>
+      `;
+    });
+    itemsHtml += `
+      <div class="cart-total-section">
+        <div class="cart-total">Total: $${total.toFixed(2)}</div>
+        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+      </div>
+    `;
+    container.innerHTML = itemsHtml;
+    // attach remove events
+    document.querySelectorAll('.cart-item-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.dataset.index, 10);
+        if (!isNaN(idx)) {
+          cart.splice(idx, 1);
+          updateCartUI();
+        }
+      });
+    });
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', () => {
+        alert('Checkout is not yet implemented. Thank you for your interest!');
+      });
+    }
+  }
+
+  function addToCart(itemName, price = "0.00") {
+    cart.push({ name: itemName, price: price });
+    updateCartUI();
+    alert(`"${itemName}" added to cart.`);
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // ---------- EXISTING CATEGORY DATA ----------
+  const catData = {
+    furniture: {
+      title: 'Furniture', sub: 'Mission & Craftsman Pieces', icon: 'ti-armchair',
+      heroImg: 'https://images.unsplash.com/photo-1616486338812-3badae4b4ace?w=1600&auto=format',
+      blurb: 'Mission and Craftsman furniture built from quartersawn oak, with straight lines and exposed joinery. Nothing decorative for its own sake. These pieces were made to last, and most of them have. We look for solid examples with honest wear.',
+      items: ['Mission Oak Sideboard','Arts & Crafts Bookcase','Craftsman Rocker','Mission Library Table','Quartersawn Oak Cabinet','Stickley-Style Chair']
+    },
+    metalwork: {
+      title: 'Metal Work', sub: 'Handcrafted Metal Objects', icon: 'ti-circles-relation',
+      heroImg: 'https://images.unsplash.com/photo-1595970443111-93d9c59df8b9?w=1600&auto=format',
+      blurb: 'Hammered copper, wrought iron, hand-finished brass. The marks of the maker are part of the point. We carry candlesticks, trays, bowls, bookends, things that work on a desk, a shelf, or a mantle.',
+      items: ['Copper Bowl','Iron Candlestick','Brass Letter Opener','Hammered Plate','Arts & Crafts Tray','Mission Bookends']
+    },
+    artwork: {
+      title: 'Art Work', sub: 'Original Arts & Crafts Art', icon: 'ti-palette',
+      heroImg: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1600&auto=format',
+      blurb: 'Painters who worked outside, close to the land. Muted tones, natural light, quiet subjects. We carry original oils, watercolors, and prints that actually fit in a Craftsman room without fighting the furniture.',
+      items: ['Landscape Oil Study','Block Print','Botanical Watercolor','Plein Air Painting','Woodblock Print','Nature Etching']
+    },
+    pottery: {
+      title: 'Pottery', sub: 'Ceramic & Glazed Vessels', icon: 'ti-bowl',
+      heroImg: 'https://images.unsplash.com/photo-1587502537745-84fc86cacdfd?w=1600&auto=format',
+      blurb: 'Rookwood, Grueby, Weller: matte glazes, organic forms, made by hand. Our pottery changes often. Some pieces are documented, some are unsigned. All of it is the real thing.',
+      items: ['Rookwood Vase','Grueby Jardinière','Arts & Crafts Jug','Matte Glaze Urn','Mission Tile Set','Earthenware Bowl']
+    },
+    lighting: {
+      title: 'Lighting', sub: 'Antique Lamps & Fixtures', icon: 'ti-lamp',
+      heroImg: 'https://images.unsplash.com/photo-1523374228103-6f44bd2c2be5?w=1600&auto=format',
+      blurb: 'Mica shades, hammered copper bases, slag glass pendants. Bradley & Hubbard, Dirk Van Erp, Handel. If you are furnishing a Craftsman home and need a lamp that actually belongs there, come take a look.',
+      items: ['Mica Shade Lamp','Hammered Copper Fixture','Arts & Crafts Chandelier','Mission Table Lamp','Slag Glass Pendant','Bradley & Hubbard Lamp']
+    }
+  };
+
+  // Animation observer (unchanged)
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+
+  function observeAll() {
+    document.querySelectorAll('.fade-up, .fade-stagger').forEach(el => { el.classList.remove('visible'); observer.observe(el); });
+  }
+  observeAll();
+
+  // Page navigation (extended to include cart)
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
+    const pg = document.getElementById('page-' + name);
+    pg.classList.add('active');
+    if (name === 'contact') pg.style.display = 'flex';
+    else if (name === 'cart') pg.style.display = 'block';
+    else pg.style.display = 'block';
+    const map = {home:0, about:1, contact:2, cart:3};
+    if (map[name] !== undefined && document.querySelectorAll('.nav-btn')[map[name]]) {
+      document.querySelectorAll('.nav-btn')[map[name]].classList.add('active');
+    }
+    if (name === 'cart') updateCartUI();
+    setTimeout(observeAll, 50);
+  }
+
+  // Category display with Add to Cart buttons
+  function showCat(cat) {
+    document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
+    const order = ['furniture','metalwork','artwork','pottery','lighting'];
+    const idx = order.indexOf(cat);
+    if (idx >= 0) document.querySelectorAll('.subnav-btn')[idx].classList.add('active');
+    document.getElementById('page-cat').classList.add('active');
+    document.getElementById('page-cat').style.display = 'block';
+    const d = catData[cat];
+    document.getElementById('cat-title').textContent = d.title;
+    document.getElementById('cat-sub').textContent = d.sub;
+    document.getElementById('cat-section-sub').textContent = 'Ever-changing inventory · Contact us for availability';
+    document.getElementById('cat-blurb').textContent = d.blurb;
+    const heroDiv = document.getElementById('cat-hero');
+    if (heroDiv) heroDiv.style.backgroundImage = `linear-gradient(rgba(10, 18, 12, 0.75), rgba(30, 42, 35, 0.75)), url('${d.heroImg}')`;
+    document.getElementById('cat-deco-row').innerHTML = `<i class="ti ${d.icon} section-deco-icon"></i><div class="section-deco-line"></div><i class="ti ti-bowl section-deco-icon"></i><div class="section-deco-line"></div><i class="ti ${d.icon} section-deco-icon"></i>`;
+    // Generate gallery items with "Add to Cart" button
+    document.getElementById('gallery-grid').innerHTML = d.items.map(item => `
+      <div class="gallery-item">
+        <div class="gallery-img"><i class="ti ${d.icon}"></i><span>Image Placeholder</span></div>
+        <div class="gallery-caption"><strong>${item}</strong>Contact us for availability and pricing.</div>
+        <button class="add-to-cart-btn" data-item="${item}">Add to Cart</button>
+      </div>
+    `).join('');
+    // attach add-to-cart event listeners
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const itemName = btn.dataset.item;
+        addToCart(itemName, "0.00");
+      });
+    });
+    setTimeout(observeAll, 50);
+  }
+
+  // Initialize cart UI on first load (empty)
+  updateCartUI();
+</script>
+</body>
+</html>
